@@ -23,7 +23,7 @@ use sc_cli::{Result, SubstrateCli};
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> &'static str {
-		"Substrate Node"
+		"Chi Node"
 	}
 
 	fn impl_version() -> &'static str {
@@ -39,7 +39,7 @@ impl SubstrateCli for Cli {
 	}
 
 	fn support_url() -> &'static str {
-		"https://github.com/paritytech/substrate/issues/new"
+		"https://github.com/social-network/chi/issues/new"
 	}
 
 	fn copyright_start_year() -> i32 {
@@ -47,14 +47,14 @@ impl SubstrateCli for Cli {
 	}
 
 	fn executable_name() -> &'static str {
-		"substrate"
+		"chi"
 	}
 
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
 		Ok(match id {
 			"dev" => Box::new(chain_spec::development_config()),
 			"local" => Box::new(chain_spec::local_testnet_config()),
-			"" | "fir" | "flaming-fir" => Box::new(chain_spec::flaming_fir_config()?),
+			"" | "chi" => Box::new(chain_spec::chi_config()?),
 			"staging" => Box::new(chain_spec::staging_testnet_config()),
 			path => Box::new(chain_spec::ChainSpec::from_json_file(
 				std::path::PathBuf::from(path),
