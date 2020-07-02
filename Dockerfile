@@ -8,9 +8,9 @@ LABEL description="This is the build stage for Substrate. Here we create the bin
 ENV DEBIAN_FRONTEND=noninteractive
 
 ARG PROFILE=release
-WORKDIR /chi
+WORKDIR /substrate
 
-COPY . /chi
+COPY . /substrate
 
 RUN apt-get update && \
 	apt-get dist-upgrade -y -o Dpkg::Options::="--force-confold" && \
@@ -21,7 +21,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
 	rustup toolchain install nightly && \
 	rustup target add wasm32-unknown-unknown --toolchain nightly && \
 	rustup default stable && \
-	cargo build "--$PROFILE"
+	cargo build -v "--$PROFILE"
 
 # ===== SECOND STAGE ======
 
@@ -33,26 +33,26 @@ ARG PROFILE=release
 RUN mv /usr/share/ca* /tmp && \
 	rm -rf /usr/share/*  && \
 	mv /tmp/ca-certificates /usr/share/ && \
-	useradd -m -u 1000 -U -s /bin/sh -d /chi chi && \
-	mkdir -p /chi/.local/share/chi && \
-	chown -R chi:chi /chi/.local && \
-	ln -s /chi/.local/share/chi /data
+	useradd -m -u 1000 -U -s /bin/sh -d /substrate substrate && \
+	mkdir -p /substrate/.local/share/substrate && \
+	chown -R substrate:substrate /substrate/.local && \
+	ln -s /substrate/.local/share/substrate /data
 
-COPY --from=builder /chi/target/$PROFILE/chi /usr/local/bin
-COPY --from=builder /chi/target/$PROFILE/subkey /usr/local/bin
-COPY --from=builder /chi/target/$PROFILE/node-rpc-client /usr/local/bin
-COPY --from=builder /chi/target/$PROFILE/chain-spec-builder /usr/local/bin
+COPY --from=builder /substrate/target/$PROFILE/substrate /usr/local/bin
+COPY --from=builder /substrate/target/$PROFILE/subkey /usr/local/bin
+COPY --from=builder /substrate/target/$PROFILE/node-rpc-client /usr/local/bin
+COPY --from=builder /substrate/target/$PROFILE/chain-spec-builder /usr/local/bin
 
 # checks
-RUN ldd /usr/local/bin/chi && \
-	/usr/local/bin/chi --version
+RUN ldd /usr/local/bin/substrate && \
+	/usr/local/bin/substrate --version
 
 # Shrinking
 RUN rm -rf /usr/lib/python* && \
 	rm -rf /usr/bin /usr/sbin /usr/share/man
 
-USER chi
+USER substrate
 EXPOSE 30333 9933 9944 9615
 VOLUME ["/data"]
 
-CMD ["/usr/local/bin/chi"]
+CMD ["/usr/local/bin/substrate"]
