@@ -63,9 +63,10 @@ pub type ChainSpec = sc_service::GenericChainSpec<
 	GenesisConfig,
 	Extensions,
 >;
-/// Flaming Fir testnet generator
-pub fn chi_config() -> Result<ChainSpec, String> {
-	ChainSpec::from_json_bytes(&include_bytes!("../res/chi.json")[..])
+
+/// Public testnet generator
+pub fn testnet_config() -> Result<ChainSpec, String> {
+	ChainSpec::from_json_bytes(&include_bytes!("../res/testnet.json")[..])
 }
 
 fn session_keys(

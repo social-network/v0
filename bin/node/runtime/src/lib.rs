@@ -90,8 +90,8 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 /// Runtime version.
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("node"),
-	impl_name: create_runtime_str!("chi-node"),
+	spec_name: create_runtime_str!("spec"),
+	impl_name: create_runtime_str!("impl"),
 	authoring_version: 1,
 	// Per convention: if the runtime behavior changes, increment spec_version
 	// and set impl_version to 0. If only runtime
