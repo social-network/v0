@@ -44,16 +44,18 @@ async fn start_inner(chain_spec: Option<String>, log_level: String) -> Result<Cl
 
 	let config = browser_configuration(chain_spec).await?;
 
-	info!("Chi browser node");
+	info!("Substrate browser node");
 	info!("✌️  version {}", config.impl_version);
-	info!("❤️  by Social Technologies, 2017-2020");
+	info!("❤️  by Parity Technologies, 2017-2020");
 	info!("📋 Chain specification: {}", config.chain_spec.name());
 	info!("🏷  Node name: {}", config.network.node_name);
 	info!("👤 Role: {:?}", config.role);
 
 	// Create the service. This is the most heavy initialization step.
-	let service = crate::service::new_light(config)
-		.map_err(|e| format!("{:?}", e))?;
+	let (task_manager, rpc_handlers) =
+		crate::service::new_light_base(config)
+			.map(|(components, rpc_handlers, _, _, _)| (components, rpc_handlers))
+			.map_err(|e| format!("{:?}", e))?;
 
-	Ok(browser_utils::start_client(service))
+	Ok(browser_utils::start_client(task_manager, rpc_handlers))
 }

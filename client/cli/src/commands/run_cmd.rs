@@ -75,7 +75,7 @@ pub struct RunCmd {
 	/// Listen to all RPC interfaces.
 	///
 	/// Default is local. Note: not all RPC methods are safe to be exposed publicly. Use an RPC proxy
-	/// server to filter out dangerous methods. More details: https://github.com/paritytech/substrate/wiki/Public-RPC.
+	/// server to filter out dangerous methods. More details: https://github.com/social-network/node/wiki/Public-RPC.
 	/// Use `--unsafe-rpc-external` to suppress the warning if you understand the risks.
 	#[structopt(long = "rpc-external")]
 	pub rpc_external: bool,
@@ -105,7 +105,7 @@ pub struct RunCmd {
 	/// Listen to all Websocket interfaces.
 	///
 	/// Default is local. Note: not all RPC methods are safe to be exposed publicly. Use an RPC proxy
-	/// server to filter out dangerous methods. More details: https://github.com/paritytech/substrate/wiki/Public-RPC.
+	/// server to filter out dangerous methods. More details: https://github.com/social-network/node/wiki/Public-RPC.
 	/// Use `--unsafe-ws-external` to suppress the warning if you understand the risks.
 	#[structopt(long = "ws-external")]
 	pub ws_external: bool,
@@ -382,7 +382,7 @@ impl CliConfiguration for RunCmd {
 		Ok(self.shared_params.dev || self.force_authoring)
 	}
 
-	fn prometheus_config(&self) -> Result<Option<PrometheusConfig>> {
+	fn prometheus_config(&self, default_listen_port: u16) -> Result<Option<PrometheusConfig>> {
 		Ok(if self.no_prometheus {
 			None
 		} else {
@@ -393,7 +393,10 @@ impl CliConfiguration for RunCmd {
 			};
 
 			Some(PrometheusConfig::new_with_default_registry(
-				SocketAddr::new(interface.into(), self.prometheus_port.unwrap_or(9615))
+				SocketAddr::new(
+					interface.into(),
+					self.prometheus_port.unwrap_or(default_listen_port),
+				)
 			))
 		})
 	}
@@ -427,7 +430,7 @@ impl CliConfiguration for RunCmd {
 			.into())
 	}
 
-	fn rpc_http(&self) -> Result<Option<SocketAddr>> {
+	fn rpc_http(&self, default_listen_port: u16) -> Result<Option<SocketAddr>> {
 		let interface = rpc_interface(
 			self.rpc_external,
 			self.unsafe_rpc_external,
@@ -435,22 +438,22 @@ impl CliConfiguration for RunCmd {
 			self.validator
 		)?;
 
-		Ok(Some(SocketAddr::new(interface, self.rpc_port.unwrap_or(9933))))
+		Ok(Some(SocketAddr::new(interface, self.rpc_port.unwrap_or(default_listen_port))))
 	}
 
 	fn rpc_ipc(&self) -> Result<Option<String>> {
 		Ok(self.ipc_path.clone())
 	}
 
-	fn rpc_ws(&self) -> Result<Option<SocketAddr>> {
+	fn rpc_ws(&self, default_listen_port: u16) -> Result<Option<SocketAddr>> {
 		let interface = rpc_interface(
 			self.ws_external,
 			self.unsafe_ws_external,
 			self.rpc_methods,
-			self.validator
+			self.validator,
 		)?;
 
-		Ok(Some(SocketAddr::new(interface, self.ws_port.unwrap_or(9944))))
+		Ok(Some(SocketAddr::new(interface, self.ws_port.unwrap_or(default_listen_port))))
 	}
 
 	fn rpc_methods(&self) -> Result<sc_service::config::RpcMethods> {

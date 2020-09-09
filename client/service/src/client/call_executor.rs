@@ -27,9 +27,12 @@ use sp_state_machine::{
 };
 use sc_executor::{RuntimeVersion, RuntimeInfo, NativeVersion};
 use sp_externalities::Extensions;
-use sp_core::{NativeOrEncoded, NeverNativeValue, traits::CodeExecutor, offchain::storage::OffchainOverlayedChanges};
+use sp_core::{
+	NativeOrEncoded, NeverNativeValue, traits::{CodeExecutor, SpawnNamed},
+	offchain::storage::OffchainOverlayedChanges,
+};
 use sp_api::{ProofRecorder, InitializeBlock, StorageTransactionCache};
-use sc_client_api::{backend, call_executor::CallExecutor, CloneableSpawn};
+use sc_client_api::{backend, call_executor::CallExecutor};
 use super::client::ClientConfig;
 
 /// Call executor that executes methods locally, querying all required
@@ -37,7 +40,7 @@ use super::client::ClientConfig;
 pub struct LocalCallExecutor<B, E> {
 	backend: Arc<B>,
 	executor: E,
-	spawn_handle: Box<dyn CloneableSpawn>,
+	spawn_handle: Box<dyn SpawnNamed>,
 	client_config: ClientConfig,
 }
 
@@ -46,7 +49,7 @@ impl<B, E> LocalCallExecutor<B, E> {
 	pub fn new(
 		backend: Arc<B>,
 		executor: E,
-		spawn_handle: Box<dyn CloneableSpawn>,
+		spawn_handle: Box<dyn SpawnNamed>,
 		client_config: ClientConfig,
 	) -> Self {
 		LocalCallExecutor {
@@ -189,7 +192,7 @@ where
 					&runtime_code,
 					self.spawn_handle.clone(),
 				);
-				// TODO: https://github.com/paritytech/substrate/issues/4455
+				// TODO: https://github.com/social-network/node/issues/4455
 				// .with_storage_transaction_cache(storage_transaction_cache.as_mut().map(|c| &mut **c))
 				state_machine.execute_using_consensus_failure_handler(execution_manager, native_call)
 			},
@@ -242,7 +245,7 @@ where
 		method: &str,
 		call_data: &[u8]
 	) -> Result<(Vec<u8>, StorageProof), sp_blockchain::Error> {
-		sp_state_machine::prove_execution_on_trie_backend::<_, _, NumberFor<Block>, _>(
+		sp_state_machine::prove_execution_on_trie_backend::<_, _, NumberFor<Block>, _, _>(
 			trie_state,
 			overlay,
 			&self.executor,

@@ -60,7 +60,7 @@ pub(crate) struct Api<Storage> {
 fn unavailable_yet<R: Default>(name: &str) -> R {
 	error!(
 		"The {:?} API is not available for offchain workers yet. Follow \
-		https://github.com/paritytech/substrate/issues/1458 for details", name
+		https://github.com/social-network/node/issues/1458 for details", name
 	);
 	Default::default()
 }
@@ -334,7 +334,7 @@ mod tests {
 
 		// Compare.
 		assert!(timestamp.unix_millis() > 0);
-		assert_eq!(timestamp.unix_millis(), d);
+		assert!(timestamp.unix_millis() >= d);
 	}
 
 	#[test]

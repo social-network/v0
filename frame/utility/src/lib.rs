@@ -64,11 +64,17 @@ use frame_support::{
 	traits::{OriginTrait, UnfilteredDispatchable},
 	weights::{Weight, GetDispatchInfo, DispatchClass}, dispatch::PostDispatchInfo,
 };
-use frame_system::{self as system, ensure_signed, ensure_root};
+use frame_system::{ensure_signed, ensure_root};
 use sp_runtime::{DispatchError, DispatchResult, traits::Dispatchable};
 
 mod tests;
 mod benchmarking;
+mod default_weights;
+
+pub trait WeightInfo {
+	fn batch(c: u32, ) -> Weight;
+	fn as_derivative() -> Weight;
+}
 
 /// Configuration trait.
 pub trait Trait: frame_system::Trait {
@@ -79,6 +85,9 @@ pub trait Trait: frame_system::Trait {
 	type Call: Parameter + Dispatchable<Origin=Self::Origin, PostInfo=PostDispatchInfo>
 		+ GetDispatchInfo + From<frame_system::Call<Self>>
 		+ UnfilteredDispatchable<Origin=Self::Origin>;
+
+	/// Weight information for extrinsics in this pallet.
+	type WeightInfo: WeightInfo;
 }
 
 decl_storage! {
@@ -89,7 +98,7 @@ decl_event! {
 	/// Events type.
 	pub enum Event {
 		/// Batch of dispatches did not complete fully. Index of first failing dispatch given, as
-		/// well as the error.
+		/// well as the error. [index, error]
 		BatchInterrupted(u32, DispatchError),
 		/// Batch of dispatches completed fully with no error.
 		BatchCompleted,
@@ -132,7 +141,8 @@ decl_module! {
 		#[weight = (
 			calls.iter()
 				.map(|call| call.get_dispatch_info().weight)
-				.fold(15_000_000, |a: Weight, n| a.saturating_add(n).saturating_add(1_000_000)),
+				.fold(0, |total: Weight, weight: Weight| total.saturating_add(weight))
+				.saturating_add(T::WeightInfo::batch(calls.len() as u32)),
 			{
 				let all_operational = calls.iter()
 					.map(|call| call.get_dispatch_info().class)
@@ -173,13 +183,9 @@ decl_module! {
 		/// NOTE: Prior to version *12, this was called `as_limited_sub`.
 		///
 		/// The dispatch origin for this call must be _Signed_.
-		///
-		/// # <weight>
-		/// - Base weight: 2.861 µs
-		/// - Plus the weight of the `call`
-		/// # </weight>
 		#[weight = (
-			call.get_dispatch_info().weight.saturating_add(3_000_000),
+			T::WeightInfo::as_derivative()
+				.saturating_add(call.get_dispatch_info().weight),
 			call.get_dispatch_info().class,
 		)]
 		fn as_derivative(origin, index: u16, call: Box<<T as Trait>::Call>) -> DispatchResult {
