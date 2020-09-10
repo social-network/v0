@@ -16,14 +16,14 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 	useradd -m -u 1000 -U -s /bin/sh -d /substrate substrate
 
 # add substrate binary to docker image
-COPY ./target/release/node-template /usr/local/bin
+COPY ./target/release/social-network-node /usr/local/bin
 
 USER substrate
 
 # check if executable works in this container
-RUN /usr/local/bin/node-template --version
+RUN /usr/local/bin/social-network-node --version
 
 EXPOSE 30333 9933 9944
-VOLUME ["/node-template"]
+VOLUME ["/social-network-node"]
 
-ENTRYPOINT ["/usr/local/bin/node-template"]
+ENTRYPOINT ["/usr/local/bin/social-network-node"]
