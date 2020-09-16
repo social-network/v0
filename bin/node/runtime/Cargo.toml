@@ -53,6 +53,7 @@ pallet-contracts = { version = "2.0.0-rc6", default-features = false, path = "..
 pallet-contracts-primitives = { version = "2.0.0-rc6", default-features = false, path = "../../../frame/contracts/common/" }
 pallet-contracts-rpc-runtime-api = { version = "0.8.0-rc6", default-features = false, path = "../../../frame/contracts/rpc/runtime-api/" }
 pallet-democracy = { version = "2.0.0-rc6", default-features = false, path = "../../../frame/democracy" }
+pallet-did = { version = "2.0.0-rc6", default-features = false, path = "../../../frame/did" }
 pallet-elections-phragmen = { version = "2.0.0-rc6", default-features = false, path = "../../../frame/elections-phragmen" }
 pallet-finality-tracker = { version = "2.0.0-rc6", default-features = false, path = "../../../frame/finality-tracker" }
 pallet-grandpa = { version = "2.0.0-rc6", default-features = false, path = "../../../frame/grandpa" }
@@ -143,6 +144,7 @@ std = [
 	"pallet-society/std",
 	"pallet-recovery/std",
 	"pallet-vesting/std",
+	"pallet-did/std"
 ]
 runtime-benchmarks = [
 	"frame-benchmarking",
