@@ -46,6 +46,7 @@ use sp_api::impl_runtime_apis;
 use sp_runtime::{
 	Permill, Perbill, Perquintill, Percent, ApplyExtrinsicResult,
 	impl_opaque_keys, generic, create_runtime_str, ModuleId, FixedPointNumber,
+	MultiSigner
 };
 use sp_runtime::curve::PiecewiseLinear;
 use sp_runtime::transaction_validity::{TransactionValidity, TransactionSource, TransactionPriority};
@@ -895,6 +896,7 @@ construct_runtime!(
 		Scheduler: pallet_scheduler::{Module, Call, Storage, Event<T>},
 		Proxy: pallet_proxy::{Module, Call, Storage, Event<T>},
 		Multisig: pallet_multisig::{Module, Call, Storage, Event<T>},
+		Did: pallet_did::{Module, Call, Storage, Event<T>},
 	}
 );
 
@@ -1196,6 +1198,12 @@ impl_runtime_apis! {
 			Ok(batches)
 		}
 	}
+}
+
+impl pallet_did::Trait for Runtime {
+	type Event = Event;
+	type Public = MultiSigner;
+	type Signature = Signature;
 }
 
 #[cfg(test)]
