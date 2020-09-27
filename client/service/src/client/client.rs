@@ -802,7 +802,8 @@ impl<B, E, Block, RA> Client<B, E, Block, RA> where
 
 		operation.op.insert_aux(aux)?;
 
-		if make_notifications {
+		// we only notify when we are already synced to the tip of the chain or if this import triggers a re-org
+		if make_notifications || tree_route.is_some() {
 			if finalized {
 				operation.notify_finalized.push(hash);
 			}
@@ -1213,7 +1214,7 @@ impl<B, E, Block, RA> ProofProvider<Block> for Client<B, E, Block, RA> where
 		// Make sure we include the `:code` and `:heap_pages` in the execution proof to be
 		// backwards compatible.
 		//
-		// TODO: Remove when solved: https://github.com/social-network/node/issues/5047
+		// TODO: Remove when solved: https://github.com/paritytech/substrate/issues/5047
 		let code_proof = self.read_proof(
 			id,
 			&mut [well_known_keys::CODE, well_known_keys::HEAP_PAGES].iter().map(|v| *v),

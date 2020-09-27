@@ -2,9 +2,9 @@
 
 The Timestamp module provides functionality to get and set the on-chain time.
 
-- [`timestamp::Trait`](./trait.Trait.html)
-- [`Call`](./enum.Call.html)
-- [`Module`](./struct.Module.html)
+- [`timestamp::Trait`](https://docs.rs/pallet-timestamppallet-timestamp/latest/pallet_timestamp/trait.Trait.html)
+- [`Call`](https://docs.rs/pallet-timestamppallet-timestamp/latest/pallet_timestamp/enum.Call.html)
+- [`Module`](https://docs.rs/pallet-timestamppallet-timestamp/latest/pallet_timestamp/struct.Module.html)
 
 ## Overview
 
@@ -64,11 +64,11 @@ decl_module! {
 
 ### Example from the FRAME
 
-The [Session module](https://github.com/social-network/node/blob/master/frame/session/src/lib.rs) uses
+The [Session module](https://github.com/paritytech/substrate/blob/master/frame/session/src/lib.rs) uses
 the Timestamp module for session management.
 
 ## Related Modules
 
-* [Session](../pallet_session/index.html)
+* [Session](https://docs.rs/pallet-timestamppallet-session/latest/pallet_session/)
 
 License: Apache-2.0

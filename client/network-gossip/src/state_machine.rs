@@ -30,7 +30,7 @@ use sp_runtime::ConsensusEngineId;
 use sc_network::ObservedRole;
 use wasm_timer::Instant;
 
-// FIXME: Add additional spam/DoS attack protection: https://github.com/social-network/node/issues/1115
+// FIXME: Add additional spam/DoS attack protection: https://github.com/paritytech/substrate/issues/1115
 const KNOWN_MESSAGES_CACHE_SIZE: usize = 4096;
 
 const REBROADCAST_INTERVAL: time::Duration = time::Duration::from_secs(30);
