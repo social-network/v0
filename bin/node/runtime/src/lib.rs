@@ -39,6 +39,7 @@ use sp_core::{
 	crypto::KeyTypeId,
 	u32_trait::{_1, _2, _3, _4},
 	OpaqueMetadata,
+	U256
 };
 pub use node_primitives::{AccountId, Signature};
 use node_primitives::{AccountIndex, Balance, BlockNumber, Hash, Index, Moment};
@@ -888,6 +889,25 @@ impl pallet_vesting::Trait for Runtime {
 	type WeightInfo = weights::pallet_vesting::WeightInfo;
 }
 
+pub struct GasPriceCalculator;
+
+impl pallet_evm::FeeCalculator for GasPriceCalculator {
+	fn min_gas_price() -> U256 {
+		U256::from(1)
+	}
+}
+
+impl pallet_evm::Trait for Runtime {
+	type FeeCalculator = GasPriceCalculator;
+	type CallOrigin = pallet_evm::EnsureAddressTruncated;
+	type WithdrawOrigin = pallet_evm::EnsureAddressTruncated;
+	type AddressMapping = pallet_evm::HashedAddressMapping<BlakeTwo256>;
+	type Currency = Balances;
+	type Event = Event;
+	type Precompiles = ();
+	type ChainId = pallet_evm::SystemChainId;
+}
+
 impl pallet_did::Trait for Runtime {
 	type Event = Event;
 	type Public = MultiSigner;
@@ -932,6 +952,7 @@ construct_runtime!(
 		Scheduler: pallet_scheduler::{Module, Call, Storage, Event<T>},
 		Proxy: pallet_proxy::{Module, Call, Storage, Event<T>},
 		Multisig: pallet_multisig::{Module, Call, Storage, Event<T>},
+		Evm: pallet_evm::{Module, Call, Storage, Event<T>},
 		Did: pallet_did::{Module, Call, Storage, Event<T>},
 	}
 );

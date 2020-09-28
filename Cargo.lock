@@ -3866,6 +3866,7 @@ dependencies = [
  "pallet-democracy",
  "pallet-did",
  "pallet-elections-phragmen",
+ "pallet-evm",
  "pallet-finality-tracker",
  "pallet-grandpa",
  "pallet-identity",
