@@ -75,7 +75,7 @@ pub struct RunCmd {
 	/// Listen to all RPC interfaces.
 	///
 	/// Default is local. Note: not all RPC methods are safe to be exposed publicly. Use an RPC proxy
-	/// server to filter out dangerous methods. More details: https://github.com/social-network/node/wiki/Public-RPC.
+	/// server to filter out dangerous methods. More details: https://github.com/paritytech/substrate/wiki/Public-RPC.
 	/// Use `--unsafe-rpc-external` to suppress the warning if you understand the risks.
 	#[structopt(long = "rpc-external")]
 	pub rpc_external: bool,
@@ -105,7 +105,7 @@ pub struct RunCmd {
 	/// Listen to all Websocket interfaces.
 	///
 	/// Default is local. Note: not all RPC methods are safe to be exposed publicly. Use an RPC proxy
-	/// server to filter out dangerous methods. More details: https://github.com/social-network/node/wiki/Public-RPC.
+	/// server to filter out dangerous methods. More details: https://github.com/paritytech/substrate/wiki/Public-RPC.
 	/// Use `--unsafe-ws-external` to suppress the warning if you understand the risks.
 	#[structopt(long = "ws-external")]
 	pub ws_external: bool,

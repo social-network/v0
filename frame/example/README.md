@@ -45,9 +45,9 @@ Copy and paste this template from frame/example/src/lib.rs into file
 // Include the following links that shows what trait needs to be implemented to use the pallet
 // and the supported dispatchables that are documented in the Call enum.
 
-- \[`<INSERT_CUSTOM_PALLET_NAME>::Trait`](./trait.Trait.html)
-- \[`Call`](./enum.Call.html)
-- \[`Module`](./struct.Module.html)
+- \[`<INSERT_CUSTOM_PALLET_NAME>::Trait`](https://docs.rs/pallet-example/latest/pallet_example/trait.Trait.html)
+- \[`Call`](https://docs.rs/pallet-example/latest/pallet_example/enum.Call.html)
+- \[`Module`](https://docs.rs/pallet-example/latest/pallet_example/struct.Module.html)
 
 \## Overview
 
@@ -61,7 +61,7 @@ Copy and paste this template from frame/example/src/lib.rs into file
 // Inputs it uses and the source of each input.
 // Outputs it produces.
 
-<!-- Original author of paragraph: @Kianenigma in PR https://github.com/social-network/node/pull/1951 -->
+<!-- Original author of paragraph: @Kianenigma in PR https://github.com/paritytech/substrate/pull/1951 -->
 <!-- and comment https://github.com/paritytech/substrate-developer-hub/issues/44#issuecomment-471982710 -->
 
 \## Terminology
@@ -73,17 +73,17 @@ Copy and paste this template from frame/example/src/lib.rs into file
 // "free balance" and "reserved balance" should be noted to give context to the pallet.
 // Please do not link to outside resources. The reference docs should be the ultimate source of truth.
 
-<!-- Original author of heading: @Kianenigma in PR https://github.com/social-network/node/pull/1951 -->
+<!-- Original author of heading: @Kianenigma in PR https://github.com/paritytech/substrate/pull/1951 -->
 
 \## Goals
 
 // Add goals that the custom pallet is designed to achieve.
 
-<!-- Original author of heading: @Kianenigma in PR https://github.com/social-network/node/pull/1951 -->
+<!-- Original author of heading: @Kianenigma in PR https://github.com/paritytech/substrate/pull/1951 -->
 
 \### Scenarios
 
-<!-- Original author of paragraph: @Kianenigma. Based on PR https://github.com/social-network/node/pull/1951 -->
+<!-- Original author of paragraph: @Kianenigma. Based on PR https://github.com/paritytech/substrate/pull/1951 -->
 
 \#### <INSERT_SCENARIO_NAME>
 

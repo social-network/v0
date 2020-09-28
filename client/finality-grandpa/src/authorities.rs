@@ -940,7 +940,7 @@ mod tests {
 		// throw a standard change into the mix to prove that it's discarded
 		// for being on the same fork.
 		//
-		// NOTE: after https://github.com/social-network/node/issues/1861
+		// NOTE: after https://github.com/paritytech/substrate/issues/1861
 		// this should still be rejected based on the "span" rule -- it overlaps
 		// with another change on the same fork.
 		let change_c = PendingChange {

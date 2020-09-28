@@ -192,7 +192,7 @@ where
 					&runtime_code,
 					self.spawn_handle.clone(),
 				);
-				// TODO: https://github.com/social-network/node/issues/4455
+				// TODO: https://github.com/paritytech/substrate/issues/4455
 				// .with_storage_transaction_cache(storage_transaction_cache.as_mut().map(|c| &mut **c))
 				state_machine.execute_using_consensus_failure_handler(execution_manager, native_call)
 			},

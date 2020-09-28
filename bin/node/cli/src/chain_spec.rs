@@ -63,6 +63,7 @@ pub type ChainSpec = sc_service::GenericChainSpec<
 	GenesisConfig,
 	Extensions,
 >;
+
 /// Testnet generator
 pub fn testnet_config() -> Result<ChainSpec, String> {
 	ChainSpec::from_json_bytes(&include_bytes!("../res/testnet.json")[..])
@@ -380,7 +381,7 @@ pub fn local_testnet_config() -> ChainSpec {
 #[cfg(test)]
 pub(crate) mod tests {
 	use super::*;
-	use crate::service::{new_full_base, new_light_base};
+	use crate::service::{new_full_base, new_light_base, NewFullBase};
 	use sc_service_test;
 	use sp_runtime::BuildStorage;
 
@@ -431,8 +432,9 @@ pub(crate) mod tests {
 		sc_service_test::connectivity(
 			integration_test_config_with_two_authorities(),
 			|config| {
-				let (keep_alive, _, client, network, transaction_pool) = new_full_base(config,|_, _| ())?;
-				Ok(sc_service_test::TestNetComponents::new(keep_alive, client, network, transaction_pool))
+				let NewFullBase { task_manager, client, network, transaction_pool, .. }
+					= new_full_base(config,|_, _| ())?;
+				Ok(sc_service_test::TestNetComponents::new(task_manager, client, network, transaction_pool))
 			},
 			|config| {
 				let (keep_alive, _, client, network, transaction_pool) = new_light_base(config)?;

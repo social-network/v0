@@ -83,7 +83,7 @@
 //!
 //! ### Example from the FRAME
 //!
-//! The [Session module](https://github.com/social-network/node/blob/master/frame/session/src/lib.rs) uses
+//! The [Session module](https://github.com/paritytech/substrate/blob/master/frame/session/src/lib.rs) uses
 //! the Timestamp module for session management.
 //!
 //! ## Related Modules
@@ -339,7 +339,7 @@ mod tests {
 		type AvailableBlockRatio = AvailableBlockRatio;
 		type MaximumBlockLength = MaximumBlockLength;
 		type Version = ();
-		type ModuleToIndex = ();
+		type PalletInfo = ();
 		type AccountData = ();
 		type OnNewAccount = ();
 		type OnKilledAccount = ();

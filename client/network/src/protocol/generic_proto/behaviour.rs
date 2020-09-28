@@ -336,14 +336,21 @@ impl GenericProto {
 		versions: &[u8],
 		handshake_message: Vec<u8>,
 		peerset: sc_peerset::Peerset,
+		notif_protocols: impl Iterator<Item = (Cow<'static, str>, Vec<u8>)>,
 	) -> Self {
+		let notif_protocols = notif_protocols
+			.map(|(n, hs)| (n, Arc::new(RwLock::new(hs))))
+			.collect::<Vec<_>>();
+
+		assert!(!notif_protocols.is_empty());
+
 		let legacy_handshake_message = Arc::new(RwLock::new(handshake_message));
 		let legacy_protocol = RegisteredProtocol::new(protocol, versions, legacy_handshake_message);
 
 		GenericProto {
 			local_peer_id,
 			legacy_protocol,
-			notif_protocols: Vec::new(),
+			notif_protocols,
 			peerset,
 			peers: FnvHashMap::default(),
 			delays: Default::default(),
@@ -1149,7 +1156,7 @@ impl NetworkBehaviour for GenericProto {
 
 						// TODO: We switch the entire peer state to "disabled" because of possible
 						// race conditions involving the legacy substream.
-						// Once https://github.com/social-network/node/issues/5670 is done, this
+						// Once https://github.com/paritytech/substrate/issues/5670 is done, this
 						// should be changed to stay in the `Enabled` state.
 						debug!(target: "sub-libp2p", "Handler({:?}) <= Disable", source);
 						debug!(target: "sub-libp2p", "PSM <= Dropped({:?})", source);

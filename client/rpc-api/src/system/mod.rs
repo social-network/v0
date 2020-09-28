@@ -80,7 +80,7 @@ pub trait SystemApi<Hash, Number> {
 	/// Returns current state of the network.
 	///
 	/// **Warning**: This API is not stable.
-	// TODO: make this stable and move structs https://github.com/social-network/node/issues/1890
+	// TODO: make this stable and move structs https://github.com/paritytech/substrate/issues/1890
 	#[rpc(name = "system_networkState", returns = "jsonrpc_core::Value")]
 	fn system_network_state(&self)
 		-> Compat<BoxFuture<'static, jsonrpc_core::Result<jsonrpc_core::Value>>>;
