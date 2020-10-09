@@ -22,3 +22,30 @@ The security policy and procedures can be found in [`docs/SECURITY.md`](docs/SEC
 
 - Substrate Primitives (`sp-*`), Frame (`frame-*`) and the pallets (`pallets-*`), binaries (`/bin`) and all other utilities are licensed under [Apache 2.0](LICENSE-APACHE2).
 - Substrate Client (`/client/*` / `sc-*`) is licensed under [GPL v3.0 with a classpath linking exception](LICENSE-GPL3).
+
+## Development
+
+### Type definitions
+
+```
+{
+  "AttributeTransaction": {
+    "signature": "Signature",
+    "name": "Vec<u8>",
+    "value": "Vec<u8>",
+    "validity": "u32",
+    "signer": "AccountId",
+    "identity": "AccountId"
+  },
+  "Attribute": {
+    "name": "Vec<u8>",
+    "value": "Vec<u8>",
+    "validity": "BlockNumber",
+    "creation": "Moment",
+    "nonce": "u64"
+  },
+  "TokenId": "u64",
+  "SwapId": "u64",
+  "TokenBalance": "u64"
+}
+```
