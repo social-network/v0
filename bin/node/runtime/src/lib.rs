@@ -940,6 +940,18 @@ impl pallet_did::Trait for Runtime {
 	type Signature = Signature;
 }
 
+impl pallet_fungible::Trait for Runtime {
+	type Event = Event;
+	type TokenBalance = u64;
+	type TokenId = u64;
+}
+
+impl pallet_swaps::Trait for Runtime {
+	type Event = Event;
+	type SwapId = u64;
+	type Currency = Balances;
+}
+
 construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
@@ -981,6 +993,8 @@ construct_runtime!(
 		Evm: pallet_evm::{Module, Call, Storage, Event<T>},
 		Ethereum: pallet_ethereum::{Module, Call, Storage, Event, Config, ValidateUnsigned},
 		Did: pallet_did::{Module, Call, Storage, Event<T>},
+		Fungible: pallet_fungible::{Module, Call, Storage, Event<T>},
+		Swaps: pallet_swaps::{Module, Call, Storage, Event<T>},
 	}
 );
 
