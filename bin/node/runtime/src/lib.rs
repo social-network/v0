@@ -952,6 +952,21 @@ impl pallet_swaps::Trait for Runtime {
 	type Currency = Balances;
 }
 
+impl pallet_mission_tokens::Trait for Runtime {
+	type Event = Event;
+	type Balance = u64;
+	type MissionTokenId = u32;
+}
+
+impl pallet_social_treasury::Trait for Runtime {
+	type Event = Event;
+}
+
+impl pallet_validator_registry::Trait for Runtime {
+	type Event = Event;
+	type MissionId = u32;
+}
+
 construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
@@ -995,6 +1010,9 @@ construct_runtime!(
 		Did: pallet_did::{Module, Call, Storage, Event<T>},
 		Fungible: pallet_fungible::{Module, Call, Storage, Event<T>},
 		Swaps: pallet_swaps::{Module, Call, Storage, Event<T>},
+		MissionTokens: pallet_mission_tokens::{Module, Call, Storage, Event<T>},
+		SocialTreasury: pallet_social_treasury::{Module, Call, Storage, Event<T>},
+		ValidatorRegistry: pallet_validator_registry::{Module, Call, Storage, Event<T>},
 	}
 );
 
