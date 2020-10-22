@@ -1,15 +1,15 @@
-use crate::{Error, mock::*};
-use frame_support::{assert_ok, assert_noop};
+use crate::{mock::*, Error};
+use frame_support::{assert_noop, assert_ok};
 
 #[test]
 fn registration_and_unregistration_should_work() {
-	new_test_ext().execute_with(|| {
+    new_test_ext().execute_with(|| {
         assert_eq!(ValidatorRegistry::mission_of(1), 0);
         assert_ok!(ValidatorRegistry::register(Origin::signed(1), 10));
         assert_eq!(ValidatorRegistry::mission_of(1), 10);
         assert_ok!(ValidatorRegistry::unregister(Origin::signed(1)));
         assert_eq!(ValidatorRegistry::mission_of(1), 0);
-	});
+    });
 }
 
 #[test]
