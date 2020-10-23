@@ -46,6 +46,8 @@ The security policy and procedures can be found in [`docs/SECURITY.md`](docs/SEC
   },
   "TokenId": "u64",
   "SwapId": "u64",
-  "TokenBalance": "u64"
+  "TokenBalance": "u64",
+  "MissionId": "u32",
+  "MissionTokenId": "u32"
 }
 ```
