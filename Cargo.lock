@@ -4880,9 +4880,9 @@ version = "0.1.0"
 dependencies = [
  "frame-support",
  "frame-system",
- "pallet-authorship",
  "pallet-balances",
  "pallet-mission-tokens",
+ "pallet-offences",
  "pallet-session",
  "pallet-staking",
  "pallet-staking-reward-curve",
@@ -4890,6 +4890,7 @@ dependencies = [
  "pallet-treasury",
  "pallet-validator-registry",
  "parity-scale-codec",
+ "serde",
  "sp-core",
  "sp-io",
  "sp-runtime",

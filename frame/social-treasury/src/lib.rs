@@ -67,7 +67,7 @@ decl_module! {
             let _who = ensure_signed(origin)?;
 
             match Something::get() {
-                None => Err(Error::<T>::NoneValue)?,
+                None => Err(Error::<T>::NoneValue.into()),
                 Some(old) => {
                     let new = old.checked_add(1).ok_or(Error::<T>::StorageOverflow)?;
                     Something::put(new);
