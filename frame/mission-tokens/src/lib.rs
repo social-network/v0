@@ -45,8 +45,8 @@ pub trait Trait: frame_system::Trait {
     /// Data to be associated with an account (other than nonce/transaction counter, which this
     /// module does regardless).
     type AccountData: Member + FullCodec + Clone + Default;
-	/// Handler for when a new account has just been created.
-	type OnNewAccount: OnNewAccount<(Self::MissionTokenId, Self::AccountId)>;
+    /// Handler for when a new account has just been created.
+    type OnNewAccount: OnNewAccount<(Self::MissionTokenId, Self::AccountId)>;
 }
 
 /// Simplified reasons for withdrawing balance.
@@ -181,7 +181,7 @@ decl_event!(
         /// Some balance was unreserved (moved from reserved to free). \[who, value\]
         Unreserved(AccountId, MissionTokenId, Balance),
         /// A new \[account\] was created.
-		NewAccount(AccountId, MissionTokenId),
+        NewAccount(AccountId, MissionTokenId),
     }
 );
 
@@ -659,11 +659,11 @@ impl<T: Trait> Module<T> {
         T::ExistentialDeposit::get()
     }
 
-	/// An account is being created.
-	pub fn on_created_account(who: (T::MissionTokenId, T::AccountId)) {
-		<T as Trait>::OnNewAccount::on_new_account(&who);
-		Self::deposit_event(RawEvent::NewAccount(who.1, who.0));
-	}
+    /// An account is being created.
+    pub fn on_created_account(who: (T::MissionTokenId, T::AccountId)) {
+        <T as Trait>::OnNewAccount::on_new_account(&who);
+        Self::deposit_event(RawEvent::NewAccount(who.1, who.0));
+    }
 }
 
 // wrapping these imbalances in a private module is necessary to ensure absolute privacy
