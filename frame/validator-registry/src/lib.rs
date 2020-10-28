@@ -1,7 +1,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use frame_support::{
-    decl_error, decl_event, decl_module, decl_storage, dispatch, ensure, traits::Get
+    decl_error, decl_event, decl_module, decl_storage, dispatch, ensure, traits::Get,
 };
 use frame_system::ensure_signed;
 
