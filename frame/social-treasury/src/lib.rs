@@ -1033,7 +1033,7 @@ decl_module! {
                     let era = NextEraForProcessing::get().unwrap_or(0);
                     if era < current_era {
                         let reward_points = <pallet_staking::Module<T>>::eras_reward_points(era);
-                        let treasury_account_id = <pallet_treasury::Module<T>>::account_id();
+                        let treasury_account_id = Self::account_id();
 
                         for (account_id, points) in reward_points.individual {
                             let mission_token_id = <pallet_validator_registry::Module<T>>::mission_of(account_id);
