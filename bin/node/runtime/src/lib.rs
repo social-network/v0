@@ -954,17 +954,47 @@ impl pallet_swaps::Trait for Runtime {
 
 impl pallet_mission_tokens::Trait for Runtime {
 	type Event = Event;
-	type Balance = u64;
+	type Balance = u128;
 	type MissionTokenId = u32;
+	type ExistentialDeposit = ExistentialDeposit;
+	type AccountStore = pallet_mission_tokens::Module<Runtime>;
+	type AccountData = pallet_mission_tokens::AccountData<Self::Balance>;
 }
 
 impl pallet_social_treasury::Trait for Runtime {
+	type ApproveOrigin = EnsureOneOf<
+		AccountId,
+		EnsureRoot<AccountId>,
+		pallet_collective::EnsureMembers<_4, AccountId, CouncilCollective>
+	>;
+	type RejectOrigin = EnsureOneOf<
+		AccountId,
+		EnsureRoot<AccountId>,
+		pallet_collective::EnsureMembers<_2, AccountId, CouncilCollective>
+	>;
+	type Tippers = Elections;
+	type TipCountdown = TipCountdown;
+	type TipFindersFee = TipFindersFee;
+	type TipReportDepositBase = TipReportDepositBase;
+	type DataDepositPerByte = DataDepositPerByte;
 	type Event = Event;
+	type OnSlash = ();
+	type ProposalBond = ProposalBond;
+	type ProposalBondMinimum = ProposalBondMinimum;
+	type SpendPeriod = SpendPeriod;
+	type Burn = Burn;
+	type BountyDepositBase = BountyDepositBase;
+	type BountyDepositPayoutDelay = BountyDepositPayoutDelay;
+	type BountyUpdatePeriod = BountyUpdatePeriod;
+	type BountyCuratorDeposit = BountyCuratorDeposit;
+	type BountyValueMinimum = BountyValueMinimum;
+	type MaximumReasonLength = MaximumReasonLength;
+	type BurnDestination = ();
+	type WeightInfo = weights::pallet_social_treasury::WeightInfo;
 }
 
 impl pallet_validator_registry::Trait for Runtime {
 	type Event = Event;
-	type MissionId = u32;
 }
 
 construct_runtime!(

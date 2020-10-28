@@ -4662,9 +4662,11 @@ dependencies = [
  "frame-support",
  "frame-system",
  "parity-scale-codec",
+ "serde",
  "sp-core",
  "sp-io",
  "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]
@@ -4895,6 +4897,7 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-staking",
+ "sp-std",
 ]
 
 [[package]]
@@ -5109,6 +5112,7 @@ version = "0.1.0"
 dependencies = [
  "frame-support",
  "frame-system",
+ "pallet-mission-tokens",
  "parity-scale-codec",
  "sp-core",
  "sp-io",
