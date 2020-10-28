@@ -959,6 +959,7 @@ impl pallet_mission_tokens::Trait for Runtime {
 	type ExistentialDeposit = ExistentialDeposit;
 	type AccountStore = pallet_mission_tokens::Module<Runtime>;
 	type AccountData = pallet_mission_tokens::AccountData<Self::Balance>;
+	type OnNewAccount = ();
 }
 
 impl pallet_social_treasury::Trait for Runtime {

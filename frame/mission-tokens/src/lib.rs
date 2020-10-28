@@ -8,7 +8,7 @@ use frame_support::{
     ensure,
     traits::{
         ExistenceRequirement, ExistenceRequirement::AllowDeath, Get, Imbalance, LockIdentifier,
-        StoredMap, TryDrop, WithdrawReason, WithdrawReasons,
+        OnNewAccount, StoredMap, TryDrop, WithdrawReason, WithdrawReasons,
     },
     Parameter,
 };
@@ -42,10 +42,11 @@ pub trait Trait: frame_system::Trait {
         (Self::MissionTokenId, Self::AccountId),
         AccountData<Self::Balance>,
     >;
-
     /// Data to be associated with an account (other than nonce/transaction counter, which this
     /// module does regardless).
     type AccountData: Member + FullCodec + Clone + Default;
+	/// Handler for when a new account has just been created.
+	type OnNewAccount: OnNewAccount<(Self::MissionTokenId, Self::AccountId)>;
 }
 
 /// Simplified reasons for withdrawing balance.
@@ -179,6 +180,8 @@ decl_event!(
         Reserved(AccountId, MissionTokenId, Balance),
         /// Some balance was unreserved (moved from reserved to free). \[who, value\]
         Unreserved(AccountId, MissionTokenId, Balance),
+        /// A new \[account\] was created.
+		NewAccount(AccountId, MissionTokenId),
     }
 );
 
@@ -655,6 +658,12 @@ impl<T: Trait> Module<T> {
     pub fn minimum_balance() -> T::Balance {
         T::ExistentialDeposit::get()
     }
+
+	/// An account is being created.
+	pub fn on_created_account(who: (T::MissionTokenId, T::AccountId)) {
+		<T as Trait>::OnNewAccount::on_new_account(&who);
+		Self::deposit_event(RawEvent::NewAccount(who.1, who.0));
+	}
 }
 
 // wrapping these imbalances in a private module is necessary to ensure absolute privacy
@@ -821,8 +830,7 @@ impl<T: Trait> StoredMap<(T::MissionTokenId, T::AccountId), <T as Trait>::Accoun
         let existed = SystemAccount::<T>::contains_key(k);
         SystemAccount::<T>::mutate(k, |a| a.data = data);
         if !existed {
-            // TODO:
-            // Self::on_created_account(k.clone());
+            Self::on_created_account(k.clone());
         }
     }
     fn remove(_k: &(T::MissionTokenId, T::AccountId)) {
@@ -836,8 +844,7 @@ impl<T: Trait> StoredMap<(T::MissionTokenId, T::AccountId), <T as Trait>::Accoun
         let existed = SystemAccount::<T>::contains_key(k);
         let r = SystemAccount::<T>::mutate(k, |a| f(&mut a.data));
         if !existed {
-            // TODO:
-            //Self::on_created_account(k.clone());
+            Self::on_created_account(k.clone());
         }
         r
     }
@@ -871,8 +878,7 @@ impl<T: Trait> StoredMap<(T::MissionTokenId, T::AccountId), <T as Trait>::Accoun
         })
         .map(|(existed, exists, v)| {
             if !existed && exists {
-                // TODO:
-                //Self::on_created_account(k.clone());
+                Self::on_created_account(k.clone());
             } else if existed && !exists {
                 // TODO:
                 //Self::on_killed_account(k.clone());
