@@ -64,6 +64,7 @@ pallet-im-online = { version = "2.0.0", default-features = false, path = "../../
 pallet-indices = { version = "2.0.0", default-features = false, path = "../../../frame/indices" }
 pallet-identity = { version = "2.0.0", default-features = false, path = "../../../frame/identity" }
 pallet-membership = { version = "2.0.0", default-features = false, path = "../../../frame/membership" }
+pallet-mission-tokens = { version = "0.1.0", default-features = false, path = "../../../frame/mission-tokens" }
 pallet-multisig = { version = "2.0.0", default-features = false, path = "../../../frame/multisig" }
 pallet-offences = { version = "2.0.0", default-features = false, path = "../../../frame/offences" }
 pallet-offences-benchmarking = { version = "2.0.0", path = "../../../frame/offences/benchmarking", default-features = false, optional = true }
@@ -75,6 +76,7 @@ pallet-session-benchmarking = { version = "2.0.0", path = "../../../frame/sessio
 pallet-staking = { version = "2.0.0", default-features = false, path = "../../../frame/staking" }
 pallet-staking-reward-curve = { version = "2.0.0", default-features = false, path = "../../../frame/staking/reward-curve" }
 pallet-scheduler = { version = "2.0.0", default-features = false, path = "../../../frame/scheduler" }
+pallet-social-treasury = { version = "0.1.0", default-features = false, path = "../../../frame/social-treasury" }
 pallet-society = { version = "2.0.0", default-features = false, path = "../../../frame/society" }
 pallet-sudo = { version = "2.0.0", default-features = false, path = "../../../frame/sudo" }
 pallet-swaps = { version = "0.1.0", default-features = false, path = "../../../frame/swaps" }
@@ -84,6 +86,7 @@ pallet-utility = { version = "2.0.0", default-features = false, path = "../../..
 pallet-transaction-payment = { version = "2.0.0", default-features = false, path = "../../../frame/transaction-payment" }
 pallet-transaction-payment-rpc-runtime-api = { version = "2.0.0", default-features = false, path = "../../../frame/transaction-payment/rpc/runtime-api/" }
 pallet-vesting = { version = "2.0.0", default-features = false, path = "../../../frame/vesting" }
+pallet-validator-registry = { version = "0.1.0", default-features = false, path = "../../../frame/validator-registry" }
 
 [build-dependencies]
 wasm-builder-runner = { version = "1.0.5", package = "substrate-wasm-builder-runner", path = "../../../utils/wasm-builder-runner" }
@@ -154,6 +157,9 @@ std = [
 	"pallet-ethereum/std",
 	"pallet-fungible/std",
 	"pallet-swaps/std",
+	"pallet-mission-tokens/std",
+	"pallet-social-treasury/std",
+	"pallet-validator-registry/std",
 ]
 runtime-benchmarks = [
 	"frame-benchmarking",
