@@ -1,7 +1,7 @@
 use crate::{Module, Trait};
 use frame_support::{impl_outer_origin, ord_parameter_types, parameter_types, weights::Weight};
 use frame_system as system;
-use frame_system::{EnsureSignedBy, EnsureOneOf, EnsureRoot};
+use frame_system::{EnsureOneOf, EnsureRoot, EnsureSignedBy};
 use sp_core::H256;
 use sp_runtime::{
     testing::Header,
@@ -56,27 +56,19 @@ impl system::Trait for Test {
 }
 
 ord_parameter_types! {
-	pub const One: u64 = 1;
-	pub const Two: u64 = 2;
+    pub const One: u64 = 1;
+    pub const Two: u64 = 2;
 }
-type EnsureOneOrRoot = EnsureOneOf<
-	u64,
-	EnsureRoot<u64>,
-	EnsureSignedBy<One, u64>
->;
-type EnsureTwoOrRoot = EnsureOneOf<
-	u64,
-	EnsureRoot<u64>,
-	EnsureSignedBy<Two, u64>
->;
+type EnsureOneOrRoot = EnsureOneOf<u64, EnsureRoot<u64>, EnsureSignedBy<One, u64>>;
+type EnsureTwoOrRoot = EnsureOneOf<u64, EnsureRoot<u64>, EnsureSignedBy<Two, u64>>;
 impl Trait for Test {
     type Event = ();
-	type MaxRegistrars = MaxRegistrars;
-	type RegistrarOrigin = EnsureOneOrRoot;
-	type ForceOrigin = EnsureTwoOrRoot;
+    type MaxRegistrars = MaxRegistrars;
+    type RegistrarOrigin = EnsureOneOrRoot;
+    type ForceOrigin = EnsureTwoOrRoot;
     type MinUsernameLength = MinUsernameLength;
     type MaxUsernameLength = MaxUsernameLength;
-	type WeightInfo = ();
+    type WeightInfo = ();
 }
 
 pub type UsernameRegistry = Module<Test>;

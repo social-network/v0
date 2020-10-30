@@ -20,36 +20,36 @@
 #![allow(unused_parens)]
 #![allow(unused_imports)]
 
-use frame_support::weights::{Weight, constants::RocksDbWeight as DbWeight};
+use frame_support::weights::{constants::RocksDbWeight as DbWeight, Weight};
 
 impl crate::WeightInfo for () {
-	fn add_registrar(r: u32, ) -> Weight {
-		(39_603_000 as Weight)
-			.saturating_add((418_000 as Weight).saturating_mul(r as Weight))
-			.saturating_add(DbWeight::get().reads(1 as Weight))
-			.saturating_add(DbWeight::get().writes(1 as Weight))
-	}
-	fn register(r: u32, ) -> Weight {
-		(110_679_000 as Weight)
-			.saturating_add((389_000 as Weight).saturating_mul(r as Weight))
-			.saturating_add(DbWeight::get().reads(1 as Weight))
-			.saturating_add(DbWeight::get().writes(1 as Weight))
-	}
-	fn unregister() -> Weight {
-		(91_553_000 as Weight)
-			.saturating_add(DbWeight::get().reads(1 as Weight))
-			.saturating_add(DbWeight::get().writes(1 as Weight))
-	}
-	fn provide_judgement(r: u32, ) -> Weight {
-		(72_869_000 as Weight)
-			.saturating_add((423_000 as Weight).saturating_mul(r as Weight))
-			.saturating_add(DbWeight::get().reads(2 as Weight))
-			.saturating_add(DbWeight::get().writes(1 as Weight))
-	}
-	fn kill_username() -> Weight {
-		(123_199_000 as Weight)
-			.saturating_add(DbWeight::get().reads(3 as Weight))
-			.saturating_add(DbWeight::get().writes(3 as Weight))
-			.saturating_add(DbWeight::get().writes((1 as Weight)))
-	}
+    fn add_registrar(r: u32) -> Weight {
+        (39_603_000 as Weight)
+            .saturating_add((418_000 as Weight).saturating_mul(r as Weight))
+            .saturating_add(DbWeight::get().reads(1 as Weight))
+            .saturating_add(DbWeight::get().writes(1 as Weight))
+    }
+    fn register(r: u32) -> Weight {
+        (110_679_000 as Weight)
+            .saturating_add((389_000 as Weight).saturating_mul(r as Weight))
+            .saturating_add(DbWeight::get().reads(1 as Weight))
+            .saturating_add(DbWeight::get().writes(1 as Weight))
+    }
+    fn unregister() -> Weight {
+        (91_553_000 as Weight)
+            .saturating_add(DbWeight::get().reads(1 as Weight))
+            .saturating_add(DbWeight::get().writes(1 as Weight))
+    }
+    fn provide_judgement(r: u32) -> Weight {
+        (72_869_000 as Weight)
+            .saturating_add((423_000 as Weight).saturating_mul(r as Weight))
+            .saturating_add(DbWeight::get().reads(2 as Weight))
+            .saturating_add(DbWeight::get().writes(1 as Weight))
+    }
+    fn kill_username() -> Weight {
+        (123_199_000 as Weight)
+            .saturating_add(DbWeight::get().reads(3 as Weight))
+            .saturating_add(DbWeight::get().writes(3 as Weight))
+            .saturating_add(DbWeight::get().writes(1 as Weight))
+    }
 }
