@@ -998,6 +998,21 @@ impl pallet_validator_registry::Trait for Runtime {
 	type Event = Event;
 }
 
+parameter_types! {
+	pub const MinUsernameLength: u32 = 5;
+	pub const MaxUsernameLength: u32 = 50;
+}
+
+impl pallet_username_registry::Trait for Runtime {
+	type Event = Event;
+	type MaxRegistrars = MaxRegistrars;
+	type MinUsernameLength = MinUsernameLength;
+	type MaxUsernameLength = MaxUsernameLength;
+	type ForceOrigin = EnsureRootOrHalfCouncil;
+	type RegistrarOrigin = EnsureRootOrHalfCouncil;
+	type WeightInfo = weights::pallet_username_registry::WeightInfo;
+}
+
 construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
@@ -1044,6 +1059,7 @@ construct_runtime!(
 		MissionTokens: pallet_mission_tokens::{Module, Call, Storage, Event<T>},
 		SocialTreasury: pallet_social_treasury::{Module, Call, Storage, Event<T>},
 		ValidatorRegistry: pallet_validator_registry::{Module, Call, Storage, Event<T>},
+		UsernameRegistry: pallet_username_registry::{Module, Call, Storage, Event<T>},
 	}
 );
 

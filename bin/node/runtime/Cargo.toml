@@ -82,6 +82,7 @@ pallet-sudo = { version = "2.0.0", default-features = false, path = "../../../fr
 pallet-swaps = { version = "0.1.0", default-features = false, path = "../../../frame/swaps" }
 pallet-timestamp = { version = "2.0.0", default-features = false, path = "../../../frame/timestamp" }
 pallet-treasury = { version = "2.0.0", default-features = false, path = "../../../frame/treasury" }
+pallet-username-registry = { version = "0.1.0", default-features = false, path = "../../../frame/username-registry" }
 pallet-utility = { version = "2.0.0", default-features = false, path = "../../../frame/utility" }
 pallet-transaction-payment = { version = "2.0.0", default-features = false, path = "../../../frame/transaction-payment" }
 pallet-transaction-payment-rpc-runtime-api = { version = "2.0.0", default-features = false, path = "../../../frame/transaction-payment/rpc/runtime-api/" }
@@ -160,6 +161,7 @@ std = [
 	"pallet-mission-tokens/std",
 	"pallet-social-treasury/std",
 	"pallet-validator-registry/std",
+	"pallet-username-registry/std",
 ]
 runtime-benchmarks = [
 	"frame-benchmarking",
