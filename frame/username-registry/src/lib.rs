@@ -300,10 +300,10 @@ impl<T: Trait> Module<T> {
 
         let is_valid_char = |c: &u8| {
             (*c >= 48 && *c <= 57)      // '0' - '9'
-            || (*c >= 65 && *c <= 90)   // 'A' - 'Z'
             || (*c >= 97 && *c <= 122)  // 'a' - 'z'
             || *c == 95                 // '_'
             || *c == 45                 // '-'
+            || *c == 46                 // '.'
         };
         ensure!(username.iter().all(is_valid_char), Error::<T>::UsernameHasInvalidChars);
 
