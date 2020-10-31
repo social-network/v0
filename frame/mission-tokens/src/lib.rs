@@ -18,7 +18,7 @@ use sp_runtime::{
         AtLeast32BitUnsigned, Bounded, CheckedAdd, CheckedSub, Member, Saturating, StaticLookup,
         Zero,
     },
-    DispatchError, RuntimeDebug, SaturatedConversion
+    DispatchError, RuntimeDebug, SaturatedConversion,
 };
 use sp_std::prelude::*;
 use sp_std::{cmp, convert::Infallible, ops::BitOr, result};
