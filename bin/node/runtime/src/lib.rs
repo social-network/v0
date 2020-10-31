@@ -952,6 +952,10 @@ impl pallet_swaps::Trait for Runtime {
 	type Currency = Balances;
 }
 
+parameter_types! {
+	pub const MaxMissionTokensSupply: u128 = 7_777_777_777;
+}
+
 impl pallet_mission_tokens::Trait for Runtime {
 	type Event = Event;
 	type Balance = u128;
@@ -960,6 +964,7 @@ impl pallet_mission_tokens::Trait for Runtime {
 	type AccountStore = pallet_mission_tokens::Module<Runtime>;
 	type AccountData = pallet_mission_tokens::AccountData<Self::Balance>;
 	type OnNewAccount = ();
+	type MaxMissionTokensSupply = MaxMissionTokensSupply;
 }
 
 impl pallet_social_treasury::Trait for Runtime {
