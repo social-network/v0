@@ -114,6 +114,7 @@ members = [
 	"frame/transaction-payment/rpc/runtime-api",
 	"frame/treasury",
 	"frame/utility",
+	"frame/username-registry",
 	"frame/validator-registry",
 	"frame/vesting",
 	"primitives/allocator",
