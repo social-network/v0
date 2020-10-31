@@ -3,7 +3,7 @@
 use codec::{Decode, Encode};
 use frame_support::{
     decl_error, decl_event, decl_module, decl_storage,
-    dispatch::DispatchResultWithPostInfo,
+    dispatch::{DispatchResult, DispatchResultWithPostInfo},
     ensure,
     traits::{EnsureOrigin, Get},
     weights::Weight,
@@ -109,6 +109,7 @@ decl_error! {
         UsernameAlreadyRegistered,
         UnregisterForbidden,
         UsernameNotFound,
+        UsernameHasInvalidChars,
     }
 }
 
@@ -173,8 +174,7 @@ decl_module! {
         fn register(origin, username: Vec<u8>, #[compact] reg_index: RegistrarIndex) -> DispatchResultWithPostInfo {
             let sender = ensure_signed(origin)?;
 
-            ensure!(username.len() >= T::MinUsernameLength::get() as usize, Error::<T>::UsernameIsVeryShort);
-            ensure!(username.len() <= T::MaxUsernameLength::get() as usize, Error::<T>::UsernameIsVeryLong);
+            Self::validate_username(&username)?;
             ensure!(!<RegistrationOf<T>>::contains_key(&username), Error::<T>::UsernameAlreadyRegistered);
 
             let registrars = <Registrars<T>>::get();
@@ -205,8 +205,7 @@ decl_module! {
         fn unregister(origin, username: Vec<u8>) -> DispatchResultWithPostInfo {
             let sender = ensure_signed(origin)?;
 
-            ensure!(username.len() >= T::MinUsernameLength::get() as usize, Error::<T>::UsernameIsVeryShort);
-            ensure!(username.len() <= T::MaxUsernameLength::get() as usize, Error::<T>::UsernameIsVeryLong);
+            Self::validate_username(&username)?;
 
             if let Some(registration) = <RegistrationOf<T>>::get(&username) {
                 if registration.account_id == sender {
@@ -237,8 +236,7 @@ decl_module! {
         fn kill_username(origin, username: Vec<u8>) -> DispatchResultWithPostInfo {
             T::ForceOrigin::ensure_origin(origin)?;
 
-            ensure!(username.len() >= T::MinUsernameLength::get() as usize, Error::<T>::UsernameIsVeryShort);
-            ensure!(username.len() <= T::MaxUsernameLength::get() as usize, Error::<T>::UsernameIsVeryLong);
+            Self::validate_username(&username)?;
             let registration = <RegistrationOf<T>>::take(&username).ok_or(Error::<T>::UsernameNotFound)?;
 
             Self::deposit_event(RawEvent::UsernameKilled(registration.account_id));
@@ -270,8 +268,7 @@ decl_module! {
         ) -> DispatchResultWithPostInfo {
             let sender = ensure_signed(origin)?;
 
-            ensure!(username.len() >= T::MinUsernameLength::get() as usize, Error::<T>::UsernameIsVeryShort);
-            ensure!(username.len() <= T::MaxUsernameLength::get() as usize, Error::<T>::UsernameIsVeryLong);
+            Self::validate_username(&username)?;
             let mut registration = <RegistrationOf<T>>::get(&username).ok_or(Error::<T>::UsernameNotFound)?;
 
             let registrars = <Registrars<T>>::get();
@@ -293,5 +290,23 @@ decl_module! {
 
             Ok(Some(T::WeightInfo::provide_judgement(registrars.len() as u32,)).into())
         }
+    }
+}
+
+impl<T: Trait> Module<T> {
+    fn validate_username(username: &[u8]) -> DispatchResult {
+        ensure!(username.len() >= T::MinUsernameLength::get() as usize, Error::<T>::UsernameIsVeryShort);
+        ensure!(username.len() <= T::MaxUsernameLength::get() as usize, Error::<T>::UsernameIsVeryLong);
+
+        let is_valid_char = |c: &u8| {
+            (*c >= 48 && *c <= 57)      // '0' - '9'
+            || (*c >= 65 && *c <= 90)   // 'A' - 'Z'
+            || (*c >= 97 && *c <= 122)  // 'a' - 'z'
+            || *c == 95                 // '_'
+            || *c == 45                 // '-'
+        };
+        ensure!(username.iter().all(is_valid_char), Error::<T>::UsernameHasInvalidChars);
+
+        Ok(())
     }
 }

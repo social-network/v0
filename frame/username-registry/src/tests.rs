@@ -159,6 +159,10 @@ fn registration_and_unregistration_with_invalid_username_should_not_work() {
             UsernameRegistry::register(Origin::signed(4), b"12345678901".to_vec(), 0),
             Error::<Test>::UsernameIsVeryLong,
         );
+        assert_noop!(
+            UsernameRegistry::register(Origin::signed(4), b"123!@#".to_vec(), 0),
+            Error::<Test>::UsernameHasInvalidChars,
+        );
         assert_ok!(UsernameRegistry::register(
             Origin::signed(4),
             b"123".to_vec(),
@@ -171,6 +175,7 @@ fn registration_and_unregistration_with_invalid_username_should_not_work() {
                 account_id: 4
             }),
         );
+
         assert_noop!(
             UsernameRegistry::unregister(Origin::signed(4), b"12".to_vec()),
             Error::<Test>::UsernameIsVeryShort,
