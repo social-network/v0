@@ -18,7 +18,7 @@ use sp_runtime::{
         AtLeast32BitUnsigned, Bounded, CheckedAdd, CheckedSub, Member, Saturating, StaticLookup,
         Zero,
     },
-    DispatchError, RuntimeDebug,
+    DispatchError, RuntimeDebug, SaturatedConversion,
 };
 use sp_std::prelude::*;
 use sp_std::{cmp, convert::Infallible, ops::BitOr, result};
@@ -47,6 +47,7 @@ pub trait Trait: frame_system::Trait {
     type AccountData: Member + FullCodec + Clone + Default;
     /// Handler for when a new account has just been created.
     type OnNewAccount: OnNewAccount<(Self::MissionTokenId, Self::AccountId)>;
+    type MaxMissionTokensSupply: Get<u128>;
 }
 
 /// Simplified reasons for withdrawing balance.
@@ -213,6 +214,8 @@ decl_error! {
 
 decl_module! {
     pub struct Module<T: Trait> for enum Call where origin: T::Origin {
+        const MaxMissionTokensSupply: u128 = T::MaxMissionTokensSupply::get();
+
         type Error = Error<T>;
 
         fn deposit_event() = default;
@@ -254,10 +257,17 @@ impl<T: Trait> Module<T> {
 
     pub fn mint(target: T::AccountId, token_id: T::MissionTokenId, value: T::Balance) {
         // TODO: add check: only treasury account can call this function
+        let current_balance = Self::free_balance(&target, token_id);
+        let total_supply = T::MaxMissionTokensSupply::get().saturated_into();
+        let allowed_value = if current_balance + value > total_supply {
+            total_supply.saturating_sub(current_balance.into())
+        } else {
+            value
+        };
         let _ = Self::try_mutate_account(&target, token_id, |account, _| -> DispatchResult {
             account.free = account
                 .free
-                .checked_add(&value)
+                .checked_add(&allowed_value)
                 .ok_or(Error::<T>::Overflow)?;
 
             Ok(())
